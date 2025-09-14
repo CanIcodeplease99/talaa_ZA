@@ -1,0 +1,18 @@
+
+name: release-ios
+on: { workflow_dispatch: {} }
+jobs:
+  deploy:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with: { flutter-version: '3.22.0' }
+      - uses: ruby/setup-ruby@v1
+        with: { ruby-version: '3.2' }
+      - run: gem install fastlane -NV
+      - run: cd ios_fastlane && fastlane deploy_internal
+        env:
+          APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}

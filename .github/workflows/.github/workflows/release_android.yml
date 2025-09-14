@@ -1,0 +1,19 @@
+
+name: release-android
+on: { workflow_dispatch: {} }
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with: { flutter-version: '3.22.0' }
+      - uses: ruby/setup-ruby@v1
+        with: { ruby-version: '3.2' }
+      - run: gem install fastlane -NV
+      - run: cd android_fastlane && fastlane deploy_internal
+        env:
+          SUPPLY_JSON_KEY_DATA: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_ALIAS: ${{ secrets.ANDROID_KEYSTORE_ALIAS }}
+          ANDROID_KEYSTORE_PASS:  ${{ secrets.ANDROID_KEYSTORE_PASS }}

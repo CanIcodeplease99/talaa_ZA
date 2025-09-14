@@ -1,0 +1,10 @@
+# ZA app build + secrets
+TalaaZAApp/android/keystore.properties
+TalaaZAApp/android/app/*.jks
+TalaaZAApp/android/app/*.keystore
+TalaaZAApp/android/app/debug.keystore
+TalaaZAApp/android/.gradle/
+TalaaZAApp/android/build/
+TalaaZAApp/android/app/build/
+TalaaZAApp/android/local.properties
+TalaaZAApp/android/.cxx/
