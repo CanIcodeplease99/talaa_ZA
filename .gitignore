@@ -8,3 +8,19 @@ TalaaZAApp/android/build/
 TalaaZAApp/android/app/build/
 TalaaZAApp/android/local.properties
 TalaaZAApp/android/.cxx/
+
+# --- Talaa mobile ignores ---
+# Env files
+TalaaZAApp/.env
+TalaaGHApp/.env
+*.env
+
+# Android signing
+TalaaZAApp/android/keystore.properties
+TalaaZAApp/android/app/*.jks
+
+# Build artifacts
+**/build/
+**/.gradle/
+**/node_modules/
+**/Pods/
