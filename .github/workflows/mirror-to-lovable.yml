@@ -1,0 +1,42 @@
+name: Mirror /backend → Lovable
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+  workflow_dispatch:
+
+jobs:
+  mirror:
+    name: Mirror subtree to Lovable
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repo (full history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure git identity
+        run: |
+          git config user.name "talaa-mirror-bot"
+          git config user.email "actions@users.noreply.github.com"
+
+      - name: Create subtree branch (backend -> temp)
+        run: |
+          git branch -D lovable-backend || true
+          git subtree split --prefix=backend -b lovable-backend
+
+      - name: Push subtree branch to Lovable main
+        env:
+          MIRROR_URL: https://x-access-token:${{ secrets.LOVABLE_MIRROR_TOKEN }}@github.com/${{ secrets.LOVABLE_REPO }}.git
+        run: |
+          git push -f "$MIRROR_URL" lovable-backend:main
+
+      - name: Cleanup local temp branch
+        if: always()
+        run: |
+          git branch -D lovable-backend || true
